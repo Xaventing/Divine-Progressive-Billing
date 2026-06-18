@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIVINE KLCC · Progressive Payment / 渐进式付款表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Montserrat:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0D0A; --panel:#15130F; --panel2:#1C1A14;
+    --gold:#C9A24B; --gold-lt:#E3C672; --gold-dk:#9C7C32;
+    --cream:#F2ECDD; --muted:#8A8268; --line:rgba(201,162,75,.22);
+    --row:rgba(201,162,75,.04);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(201,162,75,.10), transparent 60%),
+      var(--ink);
+    color:var(--cream);
+    font-family:"Noto Sans SC",Montserrat,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.6;
+    padding:clamp(16px,4vw,56px);
+  }
+  body.en{font-family:Montserrat,"Noto Sans SC",system-ui,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto}
+
+  /* language switch */
+  .lang-switch{display:flex;justify-content:center;margin-bottom:30px}
+  .lang-switch .toggle{display:flex;gap:6px;background:rgba(0,0,0,.35);padding:6px;border-radius:999px;border:1px solid var(--line)}
+  .lang-switch button{font-family:Montserrat,sans-serif;font-weight:500;font-size:13px;letter-spacing:.12em;
+    color:var(--muted);background:none;border:none;padding:9px 26px;border-radius:999px;cursor:pointer;transition:all .25s}
+  .lang-switch button.on{color:var(--ink);background:linear-gradient(180deg,var(--gold-lt),var(--gold));box-shadow:0 6px 16px -8px var(--gold)}
+  .lang-switch button:not(.on):hover{color:var(--cream)}
+
+  .topline{display:flex;align-items:center;gap:14px;color:var(--gold);
+    font-family:Montserrat,sans-serif;font-size:11px;letter-spacing:.42em;text-transform:uppercase}
+  .topline::before,.topline::after{content:"";height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);flex:1}
+  h1{font-family:"Cormorant Garamond",serif;font-weight:600;
+    font-size:clamp(40px,7vw,76px);line-height:1.02;letter-spacing:.01em;
+    text-align:center;margin:18px 0 4px;
+    background:linear-gradient(180deg,#F6E8C8,var(--gold) 60%,var(--gold-dk));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500;
+    font-size:clamp(16px,2.4vw,22px);color:var(--cream);margin-bottom:6px}
+  body.zh .tagline{font-family:"Noto Serif SC",serif;font-style:normal;font-weight:600;letter-spacing:.32em}
+  .sub{text-align:center;color:var(--muted);font-size:12px;font-family:Montserrat,sans-serif;letter-spacing:.1em}
+  body.en .sub{text-transform:uppercase;letter-spacing:.14em}
+
+  .vip{display:grid;grid-template-columns:repeat(4,1fr);margin-top:24px;padding:6px}
+  .vfield{padding:18px clamp(16px,2vw,24px);border-right:1px solid var(--line)}
+  .vfield:last-child{border-right:none}
+  .vfield label{display:block;font-family:Montserrat,sans-serif;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .vfield input{background:none;border:none;outline:none;color:var(--cream);
+    font-family:"Cormorant Garamond",serif;font-weight:600;font-size:22px;width:100%;
+    border-bottom:1px solid var(--line);padding-bottom:6px;transition:border-color .2s}
+  .vfield input::placeholder{color:rgba(138,130,104,.5);font-style:italic}
+  .vfield input:focus{border-bottom-color:var(--gold)}
+
+  .panel{background:linear-gradient(180deg,var(--panel2),var(--panel));
+    border:1px solid var(--line);border-radius:14px;
+    box-shadow:0 24px 60px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.03)}
+  .controls{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;
+    justify-content:space-between;padding:26px clamp(20px,3vw,34px);margin:22px 0 0}
+  .field label{display:block;font-family:Montserrat,sans-serif;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .price-input{display:flex;align-items:center;gap:10px;
+    border-bottom:1.5px solid var(--gold);padding:4px 2px 7px;min-width:240px}
+  .price-input span{font-family:Montserrat,sans-serif;color:var(--gold);font-size:18px;letter-spacing:.1em}
+  .price-input input{background:none;border:none;outline:none;color:var(--cream);
+    font-family:"Cormorant Garamond",serif;font-weight:600;font-size:34px;width:100%}
+  .toggle{display:flex;gap:8px;background:rgba(0,0,0,.3);padding:6px;border-radius:10px;border:1px solid var(--line)}
+  .toggle button{font-family:Montserrat,sans-serif;font-weight:500;font-size:15px;letter-spacing:.04em;
+    color:var(--muted);background:none;border:none;padding:11px 22px;border-radius:7px;cursor:pointer;transition:all .25s ease}
+  .toggle button.on{color:var(--ink);background:linear-gradient(180deg,var(--gold-lt),var(--gold));box-shadow:0 6px 18px -8px var(--gold)}
+  .toggle button:not(.on):hover{color:var(--cream)}
+
+  .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line);border-radius:14px;overflow:hidden;margin-top:22px}
+  .summary>div{background:var(--panel);padding:24px clamp(16px,2.4vw,30px)}
+  .summary .lab{font-family:Montserrat,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .summary .val{font-family:"Cormorant Garamond",serif;font-weight:600;margin-top:6px;font-size:clamp(26px,4vw,40px);line-height:1}
+  .summary .val small{font-family:Montserrat,sans-serif;font-size:14px;font-weight:400;color:var(--muted);letter-spacing:.06em}
+  .summary .accent .val{color:var(--gold-lt)}
+  .summary .net .val{background:linear-gradient(180deg,#F6E8C8,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .tbl-wrap{margin-top:22px;overflow-x:auto;border-radius:14px}
+  table{width:100%;border-collapse:collapse;min-width:680px;background:var(--panel)}
+  thead th{font-family:Montserrat,sans-serif;font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);text-align:left;padding:16px 18px;border-bottom:1px solid var(--gold);background:rgba(0,0,0,.25);position:sticky;top:0}
+  th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+  th.mid,td.mid{text-align:center}
+  tbody td{padding:13px 18px;border-bottom:1px solid rgba(201,162,75,.08);font-size:14px;vertical-align:middle}
+  tbody tr:nth-child(even){background:var(--row)}
+  .stage{font-family:Montserrat,sans-serif;font-weight:500;color:var(--cream);white-space:nowrap;font-size:13px}
+  .desc{color:#cabf9f;font-size:13px;line-height:1.45}
+  .when{color:var(--muted);font-size:12px;font-family:Montserrat,sans-serif;white-space:nowrap}
+  .amt{font-family:Montserrat,sans-serif;font-weight:500;color:var(--cream);font-size:14px}
+  .pct{font-family:Montserrat,sans-serif;color:#cabf9f}
+  tr.rebated{background:linear-gradient(90deg,rgba(201,162,75,.10),transparent 80%)!important}
+  tr.rebated .amt{color:var(--gold-dk)}
+  .strike{color:var(--muted);text-decoration:line-through;margin-right:8px}
+  .tag{display:inline-block;font-family:Montserrat,sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;
+    color:var(--ink);background:linear-gradient(180deg,var(--gold-lt),var(--gold));padding:2px 9px;border-radius:20px;white-space:nowrap}
+  tfoot td{padding:18px;border-top:1.5px solid var(--gold);background:rgba(0,0,0,.3);
+    font-family:Montserrat,sans-serif;font-weight:600;color:var(--gold-lt);font-size:15px}
+  tfoot .tot-label{letter-spacing:.14em;text-transform:uppercase;font-size:13px}
+
+  .notes{padding:24px clamp(20px,3vw,30px);margin-top:22px;color:var(--muted);font-size:13px;line-height:1.85}
+  .notes b{color:var(--gold);font-weight:600;font-family:Montserrat,sans-serif;letter-spacing:.06em;display:block;margin-bottom:8px;font-size:11px;text-transform:uppercase}
+  .notes li{list-style:none;padding-left:18px;position:relative}
+  .notes li::before{content:"—";position:absolute;left:0;color:var(--gold-dk)}
+  footer{text-align:center;color:var(--muted);font-size:11px;font-family:Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;margin-top:34px}
+
+  @media(max-width:680px){
+    .summary{grid-template-columns:1fr}
+    .controls{flex-direction:column;align-items:stretch}
+    .toggle{justify-content:space-between}
+    .vip{grid-template-columns:1fr}
+    .vfield{border-right:none;border-bottom:1px solid var(--line)}
+    .vfield:last-child{border-bottom:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body class="zh">
+<div class="wrap">
+
+  <div class="lang-switch">
+    <div class="toggle" id="langToggle">
+      <button data-l="en">ENG</button>
+      <button data-l="zh" class="on">华文</button>
+    </div>
+  </div>
+
+  <div class="topline">Chin Hin Property · Divine KLCC</div>
+  <h1>Progressive Payment</h1>
+  <div class="tagline" data-k="tagline"></div>
+  <div class="sub" data-k="sub"></div>
+
+  <div class="panel vip">
+    <div class="vfield"><label data-k="vipName"></label><input id="vName" type="text"></div>
+    <div class="vfield"><label data-k="vipType"></label><input id="vType" type="text"></div>
+    <div class="vfield"><label data-k="vipSize"></label><input id="vSize" type="text"></div>
+    <div class="vfield"><label data-k="vipView"></label><input id="vView" type="text"></div>
+  </div>
+
+  <div class="panel controls">
+    <div class="field">
+      <label data-k="priceLabel"></label>
+      <div class="price-input">
+        <span>RM</span>
+        <input id="price" type="text" inputmode="numeric" value="1,000,000" aria-label="price">
+      </div>
+    </div>
+    <div class="field">
+      <label data-k="discLabel"></label>
+      <div class="toggle" id="toggle">
+        <button data-d="18">18%</button>
+        <button data-d="20">20%</button>
+        <button data-d="25" class="on">25%</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary panel">
+    <div><div class="lab" data-k="sumPrice"></div><div class="val"><small>RM</small> <span id="sPrice">1,000,000</span></div></div>
+    <div class="accent"><div class="lab"><span data-k="sumRebate"></span> (<span id="sDiscPct">25</span>%)</div><div class="val"><small>RM</small> <span id="sDisc">250,000</span></div></div>
+    <div class="net"><div class="lab" data-k="sumNet"></div><div class="val"><small>RM</small> <span id="sNet">750,000</span></div></div>
+  </div>
+
+  <div class="panel tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-k="thStage"></th>
+          <th data-k="thDesc"></th>
+          <th class="mid" data-k="thPeriod"></th>
+          <th class="mid" data-k="thOrig"></th>
+          <th class="num" data-k="thPays"></th>
+          <th class="num" data-k="thAmt"></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+      <tfoot>
+        <tr>
+          <td class="tot-label" colspan="3" data-k="totLabel"></td>
+          <td class="mid">100.0%</td>
+          <td class="num" id="fPct">75.0%</td>
+          <td class="num" id="fAmt">RM 750,000</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="notes panel">
+    <b data-k="notesTitle"></b>
+    <ul>
+      <li id="noteRebate"></li>
+      <li data-k="note1"></li>
+      <li data-k="note2"></li>
+      <li data-k="note3"></li>
+      <li data-k="note4"></li>
+    </ul>
+  </div>
+
+  <footer>Xaven Ting · Property Consultant · Kuala Lumpur</footer>
+</div>
+
+<script>
+// [code_en, code_zh, desc_en, desc_zh, when_en, when_zh, pct]
+const STAGES = [
+  ["Stage 1","第 1 期","Upon signing of the Sale & Purchase Agreement (SPA)","签署买卖合约（SPA）时","Upon signing SPA","签署 SPA 后立即",10],
+  ["Stage 2(a)","第 2(a) 期","Works below ground level, including piling and foundation","地面以下工程，包括打桩及地基","Q2 2027","2027 年第二季",10],
+  ["Stage 2(b)(i)","第 2(b)(i) 期","The carpark / accessory parcel of the Parcel","该单位之停车位／附属单位","Q1 2028","2028 年第一季",5],
+  ["Stage 2(b)(ii)","第 2(b)(ii) 期","Reinforced concrete framework and floor slab","该单位之钢筋混凝土框架及楼板","Q4 2028","2028 年第四季",10],
+  ["Stage 2(c)","第 2(c) 期","Walls with door and window frames placed in position","墙身，门框及窗框已安装就位","Q2 2029","2029 年第二季",10],
+  ["Stage 2(d)","第 2(d) 期","Roofing/ceiling, wiring, plumbing, gas & telecom trunking","屋顶／天花、电线、水管、煤气管及电信管线","Q3 2029","2029 年第三季",10],
+  ["Stage 2(e)(i)","第 2(e)(i) 期","Internal plastering of the Parcel","该单位之内部批荡（抹灰）","Q4 2029","2029 年第四季",5],
+  ["Stage 2(e)(ii)","第 2(e)(ii) 期","External finishes, including wall finishes","外墙饰面，包括墙身饰面","Q4 2029","2029 年第四季",5],
+  ["Stage 2(f)","第 2(f) 期","Sewerage works serving the Building","服务该建筑物之污水处理工程","Q4 2027","2027 年第四季",10],
+  ["Stage 2(g)","第 2(g) 期","Drains serving the Building","服务该建筑物之排水沟","Q2 2028","2028 年第二季",5],
+  ["Stage 2(h)","第 2(h) 期","Roads serving the Building","服务该建筑物之道路","Q2 2028","2028 年第二季",5],
+  ["Stage 3","第 3 期","Vacant possession (VP), water & electricity ready for connection","领取空置管有权（VP），水电已可供接驳","Q4 2031","2031 年第四季",7.5],
+  ["Stage 4","第 4 期","As item 3, with original title delivered to Purchaser's solicitors","如第 3 项，并交付买方名下地契正本","Q4 2031","2031 年第四季",2.5],
+  ["Stage 5(a)","第 5(a) 期","Retention sum (first portion)","保留金（第一期）","","",2.5],
+  ["Stage 5(b)","第 5(b) 期","Retention sum (final portion)","保留金（最后一期）","","",2.5],
+];
+
+const T = {
+  tagline:{en:"Schedule of Stage Billing", zh:"渐 进 式 付 款 表"},
+  sub:{en:"Estimated progress as at 30 April 2026 · Buyer rebate scenarios", zh:"截至 2026 年 4 月 30 日预估进度 · 买方专属折扣方案"},
+  vipName:{en:"VIP Name", zh:"VIP 贵宾姓名"},
+  vipType:{en:"Type", zh:"单位类型 Type"},
+  vipSize:{en:"Size", zh:"面积 Size"},
+  vipView:{en:"View", zh:"景观 View"},
+  ph:{en:"To be filled", zh:"待填写"},
+  priceLabel:{en:"Property Price", zh:"产业价格 Property Price"},
+  discLabel:{en:"Buyer Discount", zh:"买方折扣 Discount"},
+  sumPrice:{en:"Property Price", zh:"产业价格"},
+  sumRebate:{en:"Rebate", zh:"折扣金额"},
+  sumNet:{en:"Net Price · Buyer Pays", zh:"净购价 · 买方实付"},
+  thStage:{en:"Stage", zh:"阶段 Stage"},
+  thDesc:{en:"Construction Progress", zh:"工程进度"},
+  thPeriod:{en:"Est. Period", zh:"预计时间"},
+  thOrig:{en:"Original %", zh:"原定 %"},
+  thPays:{en:"Buyer Pays", zh:"买方实付"},
+  thAmt:{en:"Amount (RM)", zh:"实付金额 (RM)"},
+  totLabel:{en:"Total", zh:"总计 Total"},
+  notesTitle:{en:"Notes", zh:"说明 Notes"},
+  note1:{en:"Stage 1 (signing of SPA) is paid by the buyer and is not eligible for rebate.", zh:"第 1 期（签署 SPA）为买方自付，不参与抵扣。"},
+  note2:{en:"The discount is applied as a rebate against the earliest stage billings; \u201CBuyer Pays\u201D reflects the amount actually payable.", zh:"折扣以回扣（rebate）方式抵扣前期进度款，「买方实付」即实际需缴付之款项。"},
+  note3:{en:"Dates are estimated progress and subject to the developer's notice.", zh:"日期为预估进度，实际以发展商通知书为准。"},
+  note4:{en:"Edit the \u201CProperty Price\u201D above to instantly recalculate all amounts.", zh:"修改上方「产业价格」即时重新计算所有金额。"},
+};
+
+let lang = "zh";
+let discount = 25;
+
+function rebates(d){ const r=new Array(STAGES.length).fill(0); r[1]=10; r[2]=5; r[3]=d-15; return r; }
+const fmt = n => Math.round(n).toLocaleString("en-US");
+function getPrice(){ return Number(document.getElementById("price").value.replace(/[^0-9.]/g,"")) || 0; }
+
+function applyLang(){
+  document.body.className = lang;
+  document.documentElement.lang = (lang==="zh") ? "zh-CN" : "en";
+  document.querySelectorAll("[data-k]").forEach(el=>{
+    const k = el.getAttribute("data-k");
+    if(T[k]) el.textContent = T[k][lang];
+  });
+  ["vName","vType","vSize","vView"].forEach(id=>{
+    document.getElementById(id).placeholder = T.ph[lang];
+  });
+  render();
+}
+
+function render(){
+  const price = getPrice();
+  const r = rebates(discount);
+  const tbody = document.getElementById("rows");
+  tbody.innerHTML = "";
+  let payPct = 0, payAmt = 0;
+
+  STAGES.forEach((s,i)=>{
+    const code = lang==="zh" ? s[1] : s[0];
+    const desc = lang==="zh" ? s[3] : s[2];
+    const when = lang==="zh" ? s[5] : s[4];
+    const orig = s[6];
+    const reb = r[i];
+    const net = orig - reb;
+    payPct += net; payAmt += price*net/100;
+    const tr = document.createElement("tr");
+    if(reb>0) tr.className = "rebated";
+    let payCell;
+    if(reb>0){
+      const tag = lang==="zh" ? `已抵扣 ${reb}%` : `${reb}% rebate`;
+      payCell = `<span class="strike">${orig.toFixed(1)}%</span><span class="tag">${tag}</span>`;
+    }else{
+      payCell = `<span class="pct">${net.toFixed(1)}%</span>`;
+    }
+    tr.innerHTML =
+      `<td class="stage">${code}</td>`+
+      `<td class="desc">${desc}</td>`+
+      `<td class="when mid">${when}</td>`+
+      `<td class="pct mid">${orig.toFixed(1)}%</td>`+
+      `<td class="num">${payCell}</td>`+
+      `<td class="amt num">${net>0?("RM "+fmt(price*net/100)):"\u2014"}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("fPct").textContent = payPct.toFixed(1)+"%";
+  document.getElementById("fAmt").textContent = "RM "+fmt(payAmt);
+  document.getElementById("sPrice").textContent = fmt(price);
+  document.getElementById("sDiscPct").textContent = discount;
+  document.getElementById("sDisc").textContent = fmt(price*discount/100);
+  document.getElementById("sNet").textContent = fmt(price*(100-discount)/100);
+
+  const last = discount-15;
+  const bold = `<b style="display:inline;text-transform:none;font-size:13px;color:var(--gold-lt)">${discount}%</b>`;
+  if(lang==="zh"){
+    document.getElementById("noteRebate").innerHTML =
+      `折扣 ${bold} 抵扣方式：第 2(a) 期抵 10%、第 2(b)(i) 期抵 5%`+
+      (last>0?`、第 2(b)(ii) 期抵 ${last}%。`:`。`);
+  }else{
+    document.getElementById("noteRebate").innerHTML =
+      `${bold} rebate is applied as: 10% at Stage 2(a), 5% at Stage 2(b)(i)`+
+      (last>0?`, and ${last}% at Stage 2(b)(ii).`:`.`);
+  }
+}
+
+const priceEl = document.getElementById("price");
+priceEl.addEventListener("input", ()=>{
+  const caretEnd = priceEl.selectionStart === priceEl.value.length;
+  const raw = priceEl.value.replace(/[^0-9]/g,"");
+  priceEl.value = raw ? Number(raw).toLocaleString("en-US") : "";
+  if(caretEnd) priceEl.setSelectionRange(priceEl.value.length, priceEl.value.length);
+  render();
+});
+
+document.getElementById("toggle").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#toggle button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); discount = Number(b.dataset.d); render();
+});
+
+document.getElementById("langToggle").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#langToggle button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); lang = b.dataset.l; applyLang();
+});
+
+applyLang();
+</script>
+</body>
+</html>
